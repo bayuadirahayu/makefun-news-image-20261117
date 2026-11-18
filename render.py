@@ -12,7 +12,7 @@ Layout (1024 x 1024, deep-navy masthead on cream paper):
   figures strip     -- the day in four figures
   map + top stories -- a simplified world map with the day's
                        hotspots, beside three illustrated leads
-  story grid        -- 40 verified stories in seven sections,
+  story grid        -- 36 verified stories in seven sections,
                        two columns, headline + one-line deck each
 """
 
@@ -221,7 +221,7 @@ class Canvas:
         return lines
 
 # ------------------------------------------------------------- the day
-# 40 stories, all reported on Tuesday 17 November 2026.
+# 36 stories, all reported on Tuesday 17 November 2026.
 # Each item: (headline <= 40 chars, deck <= 81 chars).
 SECTIONS = [
     ("EUROPE", [
@@ -233,10 +233,6 @@ SECTIONS = [
          "Far-right leader promises lower pension age if she wins power."),
         ("EU CHARGES TEMU OVER ILLEGAL GOODS",
          "Brussels accuses the shopping app of selling banned products."),
-        ("NATO DROPS ALBANIA SUMMIT FOR 2027",
-         "Tirana offers to host the alliance meeting in 2028 instead."),
-        ("UK SETS OUT EU SUMMIT PACKAGE",
-         "London unveils its agenda for the next UK-EU leaders' meeting."),
         ("UKRAINE TALKS END WITHOUT DEAL",
          "Kyiv negotiates with US and Europe; no agreement reached."),
         ("SERBIAN MIG-29 CRASH KILLS PILOT",
@@ -289,8 +285,6 @@ SECTIONS = [
          "WHO confirms the eye disease wiped out in the Horn of Africa."),
         ("17 KILLED IN SOUTH AFRICA SHOOTINGS",
          "Two mass shootings rock communities in one day."),
-        ("4.1 QUAKE OFF LIBYA COAST",
-         "Tremor felt along the Mediterranean shoreline."),
         ("EU-RWANDA RETURN-HUB PLAN SPARKS ROW",
          "Migrant deportation scheme draws criticism across Europe."),
     ]),
@@ -309,8 +303,6 @@ SECTIONS = [
     ("SCIENCE & WORLD", [
         ("CHEMICALS COST $1.1 TRILLION A YEAR",
          "UN puts the yearly health bill from hormone disruptors at $1.1 trillion."),
-        ("SCHOOL PHONE POUCHES LIFT SCORES",
-         "Small test-score boost found in schools that lock phones away."),
         ("COP31 TALKS ENTER DECISIVE STAGE",
          "Climate negotiators in Antalya push for a final deal."),
         ("DEPARDIEU PLEADS GUILTY",
@@ -395,7 +387,7 @@ def draw_masthead(cv):
     cv.rect(0, 0, W, 96, NAVY)
     cv.text_centred("THE WORLD IN ONE DAY", W // 2, 12, 4, CREAM)
     cv.text_centred("TUESDAY 17 NOVEMBER 2026", W // 2, 50, 2, WHITE)
-    cv.text_centred("40 STORIES - SIX CONTINENTS - ONE DAY", W // 2, 74, 1,
+    cv.text_centred("36 STORIES - SIX CONTINENTS - ONE DAY", W // 2, 74, 1,
                     (168, 186, 214))
     cv.rect(0, 92, W, 4, RED)
 
@@ -519,8 +511,10 @@ def draw_section_header(cv, x, y, name):
 def draw_story(cv, x, y, head, deck):
     cv.rect(x, y + 2, 6, 6, RED)
     cv.draw_text(head, x + 11, y, 2, INK)
-    cv.draw_text(deck, x + 11, y + 15, 1, GREY)
-    return 22  # block height
+    # Headline (scale 2) occupies rows y..y+13; deck starts at y+17,
+    # leaving rows y+14..y+16 (3px) clear between headline and deck.
+    cv.draw_text(deck, x + 11, y + 17, 1, GREY)
+    return 26  # block height: deck ends y+23, 2px clear to next story
 
 
 def draw_grid(cv, y_top):
