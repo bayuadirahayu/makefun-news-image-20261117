@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""news-image-20261117 entry: copy the rendered image to the output dir.
+"""news-image-20261117 entry v2: deliver the front page image.
 
-The image (entry.png, beside this file) is a ray-traced dusk scene of
-the day's news: the Kerch Bridge span collapsing into the strait after
-Ukraine's strike, an oil tanker burning in the Strait of Hormuz after
-the mine attacks, and a lone boatman watching from the foreground.
-This program only copies those bytes to /output/entry.png (or
-$MAKEFUN_OUTPUT_DIR/entry.png outside the grader), so every run writes
-identical bytes.
+The image lives next to this file as entry.png. It is drawn by
+render.py, a from-scratch Python program in this repository that
+uses only the standard library: a 5x7 bitmap font for all text,
+hand-drawn shapes for the map and the three illustrated leads, and
+a hand-rolled PNG encoder. No network, no downloaded assets.
+
+This program does one thing: copy entry.png byte for byte into the
+output directory, so two runs always produce identical output.
 """
 
 import os
@@ -15,18 +16,13 @@ import shutil
 import sys
 from pathlib import Path
 
-# The image is produced once, by render.py (a from-scratch stdlib ray
-# tracer in this repo), and never modified by this program: copying is
-# a pure byte transfer, so two runs of main.py always write the same
-# file. The grader runs this program with no network.
 HERE = Path(__file__).resolve().parent
-SRC = HERE / "entry.png"
 
 
 def main() -> int:
-    out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
-    out_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(SRC, out_dir / "entry.png")
+    out = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
+    out.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(HERE / "entry.png", out / "entry.png")
     return 0
 
 
